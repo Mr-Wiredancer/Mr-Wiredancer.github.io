@@ -24,3 +24,4 @@ markdown:         redcarpet
 redcarpet:
   extensions:
     - smart
+encoding: "utf-8"
