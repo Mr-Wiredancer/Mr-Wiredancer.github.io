@@ -1,0 +1,268 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>用Nodejs(Express)做简单的微博公众号接入 &#8211; We're dxHackers</title>
+<meta name="description" content="Demo post displaying the various ways of highlighting code in Markdown.">
+<meta name="keywords" content="post, code, wechat, nodejs, heroku">
+
+
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Nodejs(Express)做简单的微博公众号接入">
+<meta property="og:description" content="Demo post displaying the various ways of highlighting code in Markdown.">
+<meta property="og:url" content="http://localhost:4000/articles/%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%8F%B7%E5%BC%80%E5%8F%91">
+<meta property="og:site_name" content="We're dxHackers">
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/articles/%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%8F%B7%E5%BC%80%E5%8F%91">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="We're dxHackers Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://localhost:4000/assets/css/main.min.css">
+<!-- Webfonts -->
+<script src="//use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script src="http://localhost:4000/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post" itemscope itemtype="http://schema.org/WebPage">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop" itemscope itemtype="http://schema.org/SiteNavigationElement">
+	    <ul>
+	        
+			<li>
+				
+					<a href="http://localhost:4000/about">About</a>
+				 
+			</li>
+	        
+			<li>
+				
+					<a href="http://localhost:4000/articles">Articles</a>
+				 
+			</li>
+	        
+			<li>
+				
+					<a href="http://localhost:4000/theme-setup">Theme Setup</a>
+				 
+			</li>
+	        
+			<li>
+				
+					<a href="http://mademistakes.com">Made Mistakes</a>
+				 
+			</li>
+	        
+	        <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+	        <li class="dosearch"><i class="icon-search"></i> Search</li>
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<div class="search-wrapper">
+	<div class="search-form">
+		<input type="text" class="search-field" placeholder="Search...">
+		<i class="icon-remove-sign icon-2x"></i>
+		<ul class="search-results post-list"></ul><!-- /.search-results -->
+	</div><!-- /.search-form -->
+</div><!-- ./search-wrapper -->
+
+<header class="masthead" itemscope itemtype="http://schema.org/Organization">
+	<div class="wrap">
+		<a href="http://localhost:4000" class="site-logo" rel="home" title="We're dxHackers" itemprop="url"><img src="http://localhost:4000/images/site-logo.png" width="200" height="200" alt="We're dxHackers logo" class="animated fadeInUp" itemprop="logo"></a>
+		<h1 class="site-title animated fadeIn"><a href="http://localhost:4000">We're dxHackers</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Here are our little thoughts</h2>
+	</div>
+</header><!-- /.masthead -->
+
+
+<div id="main" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+  <article class="hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        <span class="entry-tags"><a href="http://localhost:4000/tags.html#post" title="Pages tagged post" rel="tag">post</a>&nbsp;&bull;&nbsp;<a href="http://localhost:4000/tags.html#code" title="Pages tagged code" rel="tag">code</a>&nbsp;&bull;&nbsp;<a href="http://localhost:4000/tags.html#wechat" title="Pages tagged wechat" rel="tag">wechat</a>&nbsp;&bull;&nbsp;<a href="http://localhost:4000/tags.html#nodejs" title="Pages tagged nodejs" rel="tag">nodejs</a>&nbsp;&bull;&nbsp;<a href="http://localhost:4000/tags.html#heroku" title="Pages tagged heroku" rel="tag">heroku</a></span>
+        
+          <h1 class="entry-title" itemprop="headline">用Nodejs(Express)做简单的微博公众号接入</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        <img src="http://localhost:4000/images/bio-photo.jpg" alt="dxTechnology photo" class="author-photo">
+        <span class="author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="http://localhost:4000/about" title="About dxTechnology" itemprop="url">dxTechnology</a></span></span>
+        <span class="entry-date date published"><time datetime="2013-12-27T00:00:00-05:00" itemprop="datePublished"><i class="icon-calendar-empty"></i> December 27, 2013</time></span>
+        
+        
+        <span><a href="http://localhost:4000/articles/%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%8F%B7%E5%BC%80%E5%8F%91" rel="bookmark" title="用Nodejs(Express)做简单的微博公众号接入" itemprop="url"><i class="icon-link"></i> Permalink</a></span>
+      </footer>
+      <div class="entry-content" itemprop="description">
+        <h1 id="section">前提</h1>
+<ul>
+  <li>你已经注册好了微信的公众账号（订阅号或服务号）</li>
+  <li>你可以快速的架设你的服务器（heroku, ec2, 阿里云等等）</li>
+  <li>Nodejs的基础</li>
+</ul>
+
+<h1 id="express">Express</h1>
+<p>Express是一个Nodejs的web框架，可以让你用简便的方式来写nodejs应用</p>
+
+<div class="highlight"><pre><code class="bash">npm -g install express <span class="c">#让你在除了当前文件夹以外的地方都可以用express</span>
+</code></pre></div>
+
+<h1 id="section-1">代码</h1>
+
+<p>首先来写一个简单的中间件（middleware）。所谓的中间件其实就是一个有三个参数的方程，三个参数分别是req(请求)，res(回应)，next(下一个中间件)。中间件的主要目的是给req和res做一些处理，然后再交给下一个中间件。那么下面定义一个文件<code>wechatAuth.js</code></p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">crypto</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;crypto&#39;</span><span class="p">)</span>
+	<span class="p">,</span> <span class="nx">TOKEN</span> <span class="o">=</span> <span class="s1">&#39;TOKEN&#39;</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">isValidWechatRequest</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">signature</span><span class="p">,</span> <span class="nx">timestamp</span><span class="p">,</span> <span class="nx">nonce</span><span class="p">){</span>
+	<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="nx">TOKEN</span><span class="p">,</span> <span class="nx">timestamp</span><span class="p">,</span> <span class="nx">nonce</span><span class="p">];</span>
+	<span class="nx">arr</span><span class="p">.</span><span class="nx">sort</span><span class="p">();</span>
+	
+	<span class="k">return</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createHash</span><span class="p">(</span><span class="s1">&#39;sha1&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">(</span><span class="nx">arr</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)).</span><span class="nx">digest</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">)</span> 
+		<span class="o">===</span> <span class="nx">signature</span><span class="p">;</span>
+
+<span class="p">};</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+	<span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span> <span class="nx">isValidWeixinRequest</span><span class="p">(</span>
+		<span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">signature</span>
+		<span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">timestamp</span>
+		<span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">nonce</span><span class="p">)){</span>
+		<span class="nx">next</span><span class="p">();</span>
+	<span class="p">}</span><span class="k">else</span><span class="p">{</span>
+		<span class="c1">//没有通过微信服务器的验证，可能是微信服务器出错或者恶意请求</span>
+		<span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;You didnt pass the validation&#39;</span><span class="p">);</span> 
+	<span class="p">}</span>
+
+<span class="p">};</span>
+</code></pre></div>
+
+<ul>
+  <li>sdf</li>
+  <li>sdflkj </li>
+  <li>sdfk </li>
+  <li>fdfj<em>hello</em></li>
+</ul>
+
+<p>```
+fuck this shit
+var a = 1</p>
+
+<p>```</p>
+
+<div class="highlight"><pre><code class="ruby">	<span class="mi">3</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span><span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">f</span><span class="p">}</span>			
+</code></pre></div>
+
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+    <nav class="pagination" role="navigation">
+      
+        <a href="http://localhost:4000/articles/code-highlighting-post" class="btn" title="Syntax Highlighting Post">Previous article</a>
+      
+      
+    </nav><!-- /.pagination -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2014 dxTechnology. Powered by <a href="http://jekyllrb.com">Jekyll</a> using the <a href="http://mademistakes.com/">So Simple Theme</a>.</span>
+<div class="social-icons">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</div><!-- /.social-icons -->
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://localhost:4000/assets/js/scripts.min.js"></script>
+
+<!-- Jekyll Simple Search option -->
+<script>
+  $(document).ready(function() {
+      $('.search-field').simpleJekyllSearch({
+          jsonFile : 'http://localhost:4000/search.json',
+          searchResults : '.search-results',
+          template : '<li><article><a href="{url}">{title} <span class="entry-date"><time datetime="{date}">{shortdate}</time></span></a></article></li>',
+          noResults: '<p>Nothing found.</p>'
+        });
+  });
+
+  (function( $, window, undefined ) {
+    
+     var bs = {
+          close: $(".icon-remove-sign"),
+          searchform: $(".search-form"),
+          canvas: $("body"),
+          dothis: $('.dosearch')
+      };
+    
+    bs.dothis.on('click', function() {
+      $('.search-wrapper').css({ display: "block" });
+      bs.searchform.toggleClass('active');
+      bs.searchform.find('input').focus();
+      bs.canvas.toggleClass('search-overlay');
+    });
+    
+      bs.close.on('click', function() {
+        $('.search-wrapper').removeAttr( 'style' );
+        bs.searchform.toggleClass('active');
+        bs.canvas.removeClass('search-overlay');
+    });
+  })( jQuery, window );
+</script>
+
+
+	        
+
+</body>
+</html>
