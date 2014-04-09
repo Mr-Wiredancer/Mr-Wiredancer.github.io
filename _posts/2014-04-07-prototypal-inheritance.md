@@ -20,7 +20,7 @@ comments: true
 其实类继承 (Class Based Inheritance) 和原型继承 (Prototype Based Inheritance) 其实都是为了满足 OOP 。简单一点来说，我们希望子类的对象可以继承父类定义的一些成员，增强代码的可重用性和抽象层级。
 
 下面这段代码来自于 Douglas Crockford ，实现了最简单的原型继承:
-```javascript
+{% highlight javascript %}
 function object(o) {
     function F() {}
     F.prototype = o;
@@ -38,6 +38,5 @@ newObj.hasOwnProperty('a') //=>false
 obj.hasOwnProperty('a') //=>true
 newObj.a === obj.a //=>true
 
-
-```
+{% endhighlight %}
 `object`函数接受一个对象作为参数，生成一个继承该对象的新对象。当我们试图访问新对象的某个不存在的属性时，js会沿着原型链找到旧对象，然后在旧对象里面想办法找到该属性。
