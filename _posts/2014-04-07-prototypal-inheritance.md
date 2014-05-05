@@ -29,7 +29,7 @@ function object(o) {
 }
 
 var obj = {a:1, b:2};
-var newObj = object(o);
+var newObj = object(obj);
 
 newObj.a //=> 1
 newObj.__proto__ === obj //=>true
